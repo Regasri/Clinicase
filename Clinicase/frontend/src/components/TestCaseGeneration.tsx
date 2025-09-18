@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+
 
 interface TestCase {
   id: string;
@@ -31,6 +33,7 @@ export const TestCaseGeneration = () => {
   const [selectedCompliance, setSelectedCompliance] = useState<string[]>([]);
   const [generatedTestCases, setGeneratedTestCases] = useState<TestCase[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const mockDocuments = [
     "FDA_Requirements_v2.pdf",
@@ -343,10 +346,26 @@ export const TestCaseGeneration = () => {
                 </CardDescription>
               </div>
               <div className="flex space-x-2">
-                <Button variant="outline" size="sm" onClick={exportTestCases}>
-                  <Download className="h-4 w-4 mr-2" />
-                  Export
-                </Button>
+              
+<Button
+  variant="outline"
+  size="sm"
+  onClick={() => {
+    const exportableItems = generatedTestCases.map(tc => ({
+      id: tc.id,
+      type: "test-case",
+      title: tc.title,
+      category: tc.category,
+      priority: tc.priority,
+      selected: true,
+    }));
+    navigate("/export", { state: { items: exportableItems } });
+  }}
+>
+  <Download className="h-4 w-4 mr-2" />
+  Export
+</Button>
+
                 <Button variant="outline" size="sm">
                   <Eye className="h-4 w-4 mr-2" />
                   Preview
