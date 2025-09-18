@@ -1,13 +1,16 @@
-import { FileText, Shield, Target, Zap } from "lucide-react";
+import { useState } from "react";
+import { Upload, FileText, Shield, Target, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { UnifiedWorkflow } from "@/components/UnifiedWorkflow";
+import { FileUpload } from "@/components/FileUpload";
+import { TestCaseGeneration } from "@/components/TestCaseGeneration";
 import { CompliancePanel } from "@/components/CompliancePanel";
 import { Navigation } from "@/components/Navigation";
 
 const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState("upload");
 
   const stats = [
     {
@@ -74,9 +77,33 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Unified Workflow */}
+          {/* Left Column - File Upload & Processing */}
           <div className="lg:col-span-2 space-y-6">
-            <UnifiedWorkflow />
+            {/* Navigation Tabs */}
+            <div className="flex space-x-1 bg-secondary rounded-lg p-1">
+              <Button
+                variant={activeTab === "upload" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("upload")}
+                className="flex-1"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Upload Documents
+              </Button>
+              <Button
+                variant={activeTab === "generate" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab("generate")}
+                className="flex-1"
+              >
+                <Target className="w-4 h-4 mr-2" />
+                Generate Tests
+              </Button>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === "upload" && <FileUpload />}
+            {activeTab === "generate" && <TestCaseGeneration />}
 
             {/* Recent Files */}
             <Card className="shadow-card">
