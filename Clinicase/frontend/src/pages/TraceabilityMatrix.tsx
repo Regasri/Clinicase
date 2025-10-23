@@ -70,7 +70,7 @@ const TraceabilityMatrix = () => {
   const filteredData = traceabilityData.filter(item => {
     const matchesSearch = item.requirement.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.requirementId.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = !statusFilter || item.status === statusFilter;
+    const matchesStatus = !statusFilter || statusFilter === "all" || item.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -121,7 +121,7 @@ const TraceabilityMatrix = () => {
                     <SelectValue placeholder="Filter by coverage status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="Covered">Covered</SelectItem>
                     <SelectItem value="Partial">Partial</SelectItem>
                     <SelectItem value="Not Covered">Not Covered</SelectItem>
